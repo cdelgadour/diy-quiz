@@ -1,5 +1,4 @@
 /*
-* todo: model.removeQuestion
 * todo: model.EditQuestion
  * todo: controller and model add new subject
  * todo: view.init and render
@@ -38,6 +37,16 @@ let model = {
                 item.questionList.splice(index, 1);
             }
         }
+    },
+
+    editQuestion: function(index, question, answer, subject) {
+        for (let item of this.data) {
+            if (item.theme === subject) {
+                item.questionList[index][0] = question;
+                item.questionList[index][1] = answer;
+
+            }
+        }
     }
 };
 
@@ -64,6 +73,10 @@ let controller = {
 
     remove: function (index) {
         model.removeQuestion(index, this.currentSubject);
+    },
+
+    edit: function(index, newQuestion, newAnswer) {
+        model.editQuestion(index, newQuestion, newAnswer, this.currentSubject);
     }
 };
 
