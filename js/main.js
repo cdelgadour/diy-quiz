@@ -44,7 +44,7 @@ let controller = {
     },
 
     addQuestion: function(question, answer) {
-        model.addQuestion(question, answer, this);
+        model.addQuestion(question, answer, this.currentSubject);
     }
 };
 
