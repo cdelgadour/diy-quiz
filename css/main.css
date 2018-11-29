@@ -1,0 +1,15 @@
+* {
+    box-sizing: content-box;
+}
+
+body {
+    width: 100%;
+}
+
+header {
+    background-color: springgreen;
+}
+
+nav {
+    background-color: lightgray;
+    }
