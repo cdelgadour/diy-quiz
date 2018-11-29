@@ -1,3 +1,10 @@
+/*
+* todo: model.removeQuestion
+* todo: model.EditQuestion
+ * todo: controller and model add new subject
+ * todo: view.init and render
+ * todo: view adding questions, removing questions, editing questions*/
+
 let model = {
     data: [{
         theme: 'Math',
@@ -23,6 +30,14 @@ let model = {
                 item.questionList.push([question, answer]);
             }
         }
+    },
+
+    removeQuestion: function(index, subject) {
+        for (let item of this.data) {
+            if (item.theme === subject) {
+                item.questionList.splice(index, 1);
+            }
+        }
     }
 };
 
@@ -43,8 +58,12 @@ let controller = {
         }
     },
 
-    addQuestion: function(question, answer) {
+    add: function(question, answer) {
         model.addQuestion(question, answer, this.currentSubject);
+    },
+
+    remove: function (index) {
+        model.removeQuestion(index, this.currentSubject);
     }
 };
 
