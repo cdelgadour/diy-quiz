@@ -1,8 +1,7 @@
 /*
-* todo: model.EditQuestion
- * todo: controller and model add new subject
  * todo: view.init and render
- * todo: view adding questions, removing questions, editing questions*/
+ * todo: view adding questions, removing questions, editing questions
+ * */
 
 let model = {
     data: [{
@@ -58,6 +57,10 @@ let controller = {
         view.init();
     },
 
+    addSubject: function(newSubject) {
+        model.data.push({theme: newSubject, questionList: []});
+    },
+
     chooseSubject: function(subject) {
         for (let item of model.data) {
             if (item.theme === subject) {
@@ -77,8 +80,28 @@ let controller = {
 
     edit: function(index, newQuestion, newAnswer) {
         model.editQuestion(index, newQuestion, newAnswer, this.currentSubject);
+    },
+
+    getAllData: function() {
+        return model.data;
     }
 };
 
-let view = {};
+let view = {
+    init: (function() {
+        this.subjectList = document.querySelector('#exam-themes');
+
+        for (let item of controller.getAllData()) {
+            let subjectElement = document.createElement('option');
+            subjectElement.value = item.theme;
+            subjectElement.textContent = `${item.theme}`;
+
+            this.subjectList.appendChild(subjectElement);
+        }
+
+        this.createEvents();
+
+    })(),
+
+};
 
