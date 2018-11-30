@@ -1,6 +1,7 @@
 /*
- * todo: view.init and render
- * todo: view adding questions, removing questions, editing questions
+ * TODO: clean screen after choosing new subject
+ * TODO: Addsubject button
+ * TODO: Each item's buttons
  * */
 
 let model = {
@@ -13,14 +14,14 @@ let model = {
             questionList: [['nameofquestion','answer of question2']]
     }],
 
-    init: function() {
+    /*init: function() {
         if (!localStorage.data) {
             localStorage.clear();
             localStorage.data = JSON.stringify([]);
         } else {
             model.data = JSON.parse(localStorage.data);
         }
-    },
+    },*/
 
     addQuestion: function(question, answer, subject) {
         for (let item of this.data) {
@@ -53,7 +54,7 @@ let controller = {
     currentSubject: '',
 
     init: function() {
-        model.init();
+        /*model.init();*/
         view.init();
     },
 
@@ -65,7 +66,7 @@ let controller = {
         for (let item of model.data) {
             if (item.theme === subject) {
                 this.currentSubject = subject;
-                return console.log(item);
+                return (item.questionList);
             }
         }
     },
@@ -88,7 +89,7 @@ let controller = {
 };
 
 let view = {
-    init: (function() {
+    init: function() {
         this.subjectList = document.querySelector('#exam-themes');
 
         for (let item of controller.getAllData()) {
@@ -99,9 +100,37 @@ let view = {
             this.subjectList.appendChild(subjectElement);
         }
 
-        this.createEvents();
+        this.createEvents(this.subjectList);
 
-    })(),
+    },
 
+    createEvents: function(subjectList) {
+        subjectList.onchange = function() {
+            if (subjectList.value !== '-') {
+                let data = controller.chooseSubject(subjectList.value);
+                view.renderQuestions(data);
+            }
+        }
+    },
+
+    renderQuestions: function(data) {
+        console.log(data);
+        for (let questionAnswer of data) {
+            let itemContainer = document.createElement('li');
+
+            itemContainer.innerHTML = `<span class="info-box">
+                <h2 class="question-text">${questionAnswer[0]}</h2>
+                <h3 class="answer-text">${questionAnswer[1]}</h3>
+                </span>
+                <span class="button-box">
+                <button class="play"></button>
+                <button class="edit"></button>
+                <button class="remove"></button>
+                </span>`;
+
+            document.querySelector('ul').appendChild(itemContainer);
+        }
+    }
 };
 
+controller.init();
