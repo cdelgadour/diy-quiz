@@ -114,11 +114,15 @@ let view = {
     },
 
     renderQuestions: function(data) {
-        console.log(data);
-        for (let questionAnswer of data) {
-            let itemContainer = document.createElement('li');
+        document.querySelector('.main').innerHTML = '';
 
-            itemContainer.innerHTML = `<span class="info-box">
+        let questionContainer = document.createElement('ul');
+
+        for (let questionAnswer of data) {
+
+            let item = document.createElement('li');
+
+            item.innerHTML = `<span class="info-box">
                 <h2 class="question-text">${questionAnswer[0]}</h2>
                 <h3 class="answer-text">${questionAnswer[1]}</h3>
                 </span>
@@ -128,8 +132,9 @@ let view = {
                 <button class="remove"></button>
                 </span>`;
 
-            document.querySelector('ul').appendChild(itemContainer);
+            questionContainer.innerHTML += item.innerHTML;
         }
+        document.querySelector('.main').appendChild(questionContainer);
     }
 };
 
