@@ -75,8 +75,16 @@ let controller = {
         model.addQuestion(question, answer, this.currentSubject);
     },
 
-    remove: function (index) {
+    removeQuestion: function (index) {
         model.removeQuestion(index, this.currentSubject);
+    },
+
+    removeSubject: function(){
+        model.data.forEach((element, index) => {
+            if (element.theme === this.currentSubject) {
+                model.data.splice(index, 1);
+            }
+        })
     },
 
     edit: function(index, newQuestion, newAnswer) {
@@ -109,7 +117,15 @@ let view = {
             }
         });
 
-        
+        this.deleteSubject = document.querySelector('#delete-subject');
+        this.deleteSubject.addEventListener('click', () => {
+            if (controller.currentSubject !== ''){
+                controller.removeSubject();
+                this.updateView();
+            }
+        });
+
+
 
         this.createEvents(this.subjectList);
     },
