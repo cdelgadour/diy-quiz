@@ -1,7 +1,7 @@
 /*
- * TODO: clean screen after choosing new subject
  * TODO: Addsubject button
- * TODO: Each item's buttons
+ * TODO: Each item's buttons (edit, delete)
+ * TODO: add question button
  * */
 
 let model = {
@@ -100,8 +100,29 @@ let view = {
             this.subjectList.appendChild(subjectElement);
         }
 
-        this.createEvents(this.subjectList);
+        this.addSubject = document.querySelector('#add-subject');
+        this.addSubject.addEventListener('click', function(){
+            let promptAnswer = prompt();
+            if (promptAnswer != null && promptAnswer !== '') {
+                controller.addSubject(promptAnswer);
+                view.updateView();
+            }
+        });
 
+        
+
+        this.createEvents(this.subjectList);
+    },
+
+    updateView: function() {
+        this.subjectList.innerHTML = '';
+        for (let item of controller.getAllData()) {
+            let subjectElement = document.createElement('option');
+            subjectElement.value = item.theme;
+            subjectElement.textContent = `${item.theme}`;
+
+            this.subjectList.appendChild(subjectElement);
+        }
     },
 
     createEvents: function(subjectList) {
