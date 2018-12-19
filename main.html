@@ -17,26 +17,22 @@
 <nav>
     <form action="">
         <select name="exam Themes" id="exam-themes">
-            <option value="-">-</option>
         </select>
     </form>
     <button id="add-subject">Add subject</button>
     <button id="delete-subject">Delete subject</button>
 </nav>
 <section class="main">
-    <ul>
-        <li class="item">
-            <span class="info-box">
-                <h2 class="question-text"></h2>
-                <h3 class="answer-text"></h3>
-            </span>
-            <span class="button-box">
-                <button class="play"></button>
-                <button class="edit"></button>
-                <button class="remove"></button>
-            </span>
-        </li>
-    </ul>
+    <form id="question-form">
+        <textarea name="question" id="question-area" cols="30" rows="10"></textarea>
+        <textarea name="answer" id="answer-area" cols="30" rows="10"></textarea>
+        <button type="button" id="add-question" style="display: block">Add!</button>
+    </form>
+    <div id="all-questions">
+        <ul>
+        </ul>
+    </div>
+
 </section>
 </body>
 <script src="js/main.js"></script>

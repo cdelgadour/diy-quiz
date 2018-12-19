@@ -1,7 +1,7 @@
 /*
- * TODO: Addsubject button
- * TODO: Each item's buttons (edit, delete)
- * TODO: add question button
+   TODO: validar en el edit function para que no llame la funcion cuando el prompt sea cancel
+   TODO: el ok del prompt me esta actualizando la pagina.Tengo que parar eso. Cuando le doy click, vuelvo a math.
+ * TODO: remove function
  * */
 
 let model = {
@@ -69,6 +69,7 @@ let controller = {
                 return (item.questionList);
             }
         }
+        this.currentSubject = '';
     },
 
     add: function(question, answer) {
@@ -85,14 +86,21 @@ let controller = {
                 model.data.splice(index, 1);
             }
         })
+        this.chooseSubject('');
+        view.updateSubjectList();
     },
 
     edit: function(index, newQuestion, newAnswer) {
         model.editQuestion(index, newQuestion, newAnswer, this.currentSubject);
+        /*view.updateSubjectList();*/
     },
 
     getAllData: function() {
         return model.data;
+    },
+
+    getDataBySubject: function(subject) {
+        return model.data
     }
 };
 
@@ -113,7 +121,7 @@ let view = {
             let promptAnswer = prompt();
             if (promptAnswer != null && promptAnswer !== '') {
                 controller.addSubject(promptAnswer);
-                view.updateView();
+                view.updateSubjectList();
             }
         });
 
@@ -121,16 +129,23 @@ let view = {
         this.deleteSubject.addEventListener('click', () => {
             if (controller.currentSubject !== ''){
                 controller.removeSubject();
-                this.updateView();
             }
         });
 
+        this.addQuestionBttn = document.querySelector('#add-question');
+        this.addQuestionBttn.addEventListener('click', () => {
+            let questionText = document.querySelector('#question-area');
+            let answerText = document.querySelector('#answer-area');
 
-
+            controller.add(questionText.value, answerText.value);
+            questionText.value = '';
+            answerText.value = '';
+            this.subjectList.onchange();
+        });
         this.createEvents(this.subjectList);
     },
 
-    updateView: function() {
+    updateSubjectList: function() {
         this.subjectList.innerHTML = '';
         for (let item of controller.getAllData()) {
             let subjectElement = document.createElement('option');
@@ -141,6 +156,11 @@ let view = {
         }
     },
 
+    updateQuestions: function() {
+
+    },
+
+    /*TODO: Lamberme esta funcion*/
     createEvents: function(subjectList) {
         subjectList.onchange = function() {
             if (subjectList.value !== '-') {
@@ -151,28 +171,63 @@ let view = {
     },
 
     renderQuestions: function(data) {
-        document.querySelector('.main').innerHTML = '';
+        document.querySelector('#all-questions').innerHTML = '';
 
         let questionContainer = document.createElement('ul');
+        let index = 0;
 
         for (let questionAnswer of data) {
 
             let item = document.createElement('li');
+            item.index = index;
+
 
             item.innerHTML = `<span class="info-box">
                 <h2 class="question-text">${questionAnswer[0]}</h2>
                 <h3 class="answer-text">${questionAnswer[1]}</h3>
                 </span>
                 <span class="button-box">
-                <button class="play"></button>
-                <button class="edit"></button>
-                <button class="remove"></button>
+                <button class="edit">Edit</button>
+                <button class="remove">Remove</button>
                 </span>`;
 
-            questionContainer.innerHTML += item.innerHTML;
+            questionContainer.appendChild(item);
+            index++;
         }
-        document.querySelector('.main').appendChild(questionContainer);
-    }
-};
+        questionContainer.addEventListener('click', editBttn);
+        document.querySelector('#all-questions').appendChild(questionContainer);
 
+        //this.assignBttnEvents();
+    },
+
+    /*assignBttnEvents: function() {
+       poner el evento sobre ul
+        discriminar por e target
+        dependiendo del target se accesa al parent, parent
+    }*/
+};
 controller.init();
+
+function editBttn(e) {
+    if (e.target.textContent === 'Edit'){
+        e.stopPropagation();
+        let parent = e.srcElement.parentElement.parentElement;
+        let questionText = parent.firstChild.childNodes[1].textContent;
+        let answerText = parent.firstChild.childNodes[3].textContent;
+        console.log(questionText, answerText);
+        console.log(parent.index);
+
+        let newQuestion, newAnswer;
+        newQuestion = prompt('Edit question', questionText);
+        console.log(newQuestion);
+        newAnswer = prompt('Edit answer', answerText);
+
+        if (newQuestion !== null && newAnswer !== null) {
+            controller.edit(parent.index, newQuestion, newAnswer);
+        }
+
+    }
+}
+
+/*Cuando yo uso edit no se actualiza porque yo no tengo nada para actualizarlo. Lo que yo tengo para actualizar
+* el view, es el evento que yo puse cuando se cambiara el subjectList. El llama a la funcion render questions*/
