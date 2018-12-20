@@ -1,4 +1,5 @@
 /*
+    TODO: Cambiar como funciona el REMOVE dado los cambios
    TODO: validar en el edit function para que no llame la funcion cuando el prompt sea cancel
    TODO: el ok del prompt me esta actualizando la pagina.Tengo que parar eso. Cuando le doy click, vuelvo a math.
  * TODO: remove function
@@ -72,6 +73,7 @@ let controller = {
 
     removeQuestion: function (index) {
         model.removeQuestion(index, this.currentSubject);
+        view.renderQuestions();
     },
 
     removeSubject: function(){
@@ -136,8 +138,12 @@ let view = {
             controller.add(questionText.value, answerText.value);
             questionText.value = '';
             answerText.value = '';
-            this.subjectList.onchange();
+            view.renderQuestions();
         });
+
+
+
+
 
 
         this.subjectList.onchange = function(subjectList) {
@@ -188,6 +194,7 @@ let view = {
             index++;
         }
         questionContainer.addEventListener('click', editBttn);
+        questionContainer.addEventListener('click', removeBttn);
         document.querySelector('#all-questions').appendChild(questionContainer);
 
     },
@@ -210,8 +217,18 @@ function editBttn(e) {
 
         if (newQuestion !== null && newAnswer !== null) {
             controller.edit(parent.index, newQuestion, newAnswer);
+            view.renderQuestions();
         }
 
+    }
+}
+
+function removeBttn(e) {
+    if (e.target.textContent === 'Remove'){
+        e.stopPropagation();
+        let parent = e.srcElement.parentElement.parentElement;
+        console.log(parent.index);
+        controller.removeQuestion(parent.index);
     }
 }
 
