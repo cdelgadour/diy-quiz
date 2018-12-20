@@ -63,13 +63,7 @@ let controller = {
     },
 
     chooseSubject: function(subject) {
-        for (let item of model.data) {
-            if (item.theme === subject) {
-                this.currentSubject = subject;
-                return (item.questionList);
-            }
-        }
-        this.currentSubject = '';
+        this.currentSubject = subject;
     },
 
     add: function(question, answer) {
@@ -99,8 +93,10 @@ let controller = {
         return model.data;
     },
 
-    getDataBySubject: function(subject) {
-        return model.data
+    getDataBySubject: function() {
+       for (let item of model.data) {
+           if (item.theme === this.currentSubject) return item.questionList;
+       }
     }
 };
 
@@ -142,7 +138,12 @@ let view = {
             answerText.value = '';
             this.subjectList.onchange();
         });
-        this.createEvents(this.subjectList);
+
+
+        this.subjectList.onchange = function(subjectList) {
+            controller.chooseSubject(subjectList.target.value);
+            view.renderQuestions();
+        }
     },
 
     updateSubjectList: function() {
@@ -160,17 +161,9 @@ let view = {
 
     },
 
-    /*TODO: Lamberme esta funcion*/
-    createEvents: function(subjectList) {
-        subjectList.onchange = function() {
-            if (subjectList.value !== '-') {
-                let data = controller.chooseSubject(subjectList.value);
-                view.renderQuestions(data);
-            }
-        }
-    },
+    renderQuestions: function() {
+        let data = controller.getDataBySubject();
 
-    renderQuestions: function(data) {
         document.querySelector('#all-questions').innerHTML = '';
 
         let questionContainer = document.createElement('ul');
@@ -197,14 +190,7 @@ let view = {
         questionContainer.addEventListener('click', editBttn);
         document.querySelector('#all-questions').appendChild(questionContainer);
 
-        //this.assignBttnEvents();
     },
-
-    /*assignBttnEvents: function() {
-       poner el evento sobre ul
-        discriminar por e target
-        dependiendo del target se accesa al parent, parent
-    }*/
 };
 controller.init();
 
