@@ -1,7 +1,5 @@
 /*
-    TODO: Cambiar como funciona el REMOVE dado los cambios
-   TODO: validar en el edit function para que no llame la funcion cuando el prompt sea cancel
-   TODO: el ok del prompt me esta actualizando la pagina.Tengo que parar eso. Cuando le doy click, vuelvo a math.
+ * TODO: el ok del prompt me esta actualizando la pagina.Tengo que parar eso. Cuando le doy click, vuelvo a math.
  * TODO: remove function
  * */
 
@@ -61,6 +59,7 @@ let controller = {
 
     addSubject: function(newSubject) {
         model.data.push({theme: newSubject, questionList: []});
+        this.chooseSubject(newSubject);
     },
 
     chooseSubject: function(subject) {
@@ -120,6 +119,7 @@ let view = {
             if (promptAnswer != null && promptAnswer !== '') {
                 controller.addSubject(promptAnswer);
                 view.updateSubjectList();
+                view.renderQuestions();
             }
         });
 
@@ -161,10 +161,7 @@ let view = {
 
             this.subjectList.appendChild(subjectElement);
         }
-    },
-
-    updateQuestions: function() {
-
+        this.subjectList.options.selectedIndex = this.subjectList.length - 1;
     },
 
     renderQuestions: function() {
@@ -212,14 +209,13 @@ function editBttn(e) {
 
         let newQuestion, newAnswer;
         newQuestion = prompt('Edit question', questionText);
-        console.log(newQuestion);
-        newAnswer = prompt('Edit answer', answerText);
-
-        if (newQuestion !== null && newAnswer !== null) {
-            controller.edit(parent.index, newQuestion, newAnswer);
-            view.renderQuestions();
+        if (newQuestion !== null) {
+            newAnswer = prompt('Edit answer', answerText);
+            if (newAnswer !== null) {
+                controller.edit(parent.index, newQuestion, newAnswer);
+                view.renderQuestions()
+            }
         }
-
     }
 }
 
