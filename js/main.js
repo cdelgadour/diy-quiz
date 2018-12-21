@@ -1,6 +1,4 @@
 /*
- * TODO: el ok del prompt me esta actualizando la pagina.Tengo que parar eso. Cuando le doy click, vuelvo a math.
- * TODO: remove function
  * */
 
 let model = {
@@ -75,14 +73,17 @@ let controller = {
         view.renderQuestions();
     },
 
+    /*
+    * TODO: Elemino el elemento
+    * TODO: Tengo que seleccionar otro como */
+
     removeSubject: function(){
         model.data.forEach((element, index) => {
             if (element.theme === this.currentSubject) {
                 model.data.splice(index, 1);
+                this.chooseSubject('');
             }
-        })
-        this.chooseSubject('');
-        view.updateSubjectList();
+        });
     },
 
     edit: function(index, newQuestion, newAnswer) {
@@ -118,7 +119,7 @@ let view = {
             let promptAnswer = prompt();
             if (promptAnswer != null && promptAnswer !== '') {
                 controller.addSubject(promptAnswer);
-                view.updateSubjectList();
+                view.updateSubjectList(false);
                 view.renderQuestions();
             }
         });
@@ -127,6 +128,8 @@ let view = {
         this.deleteSubject.addEventListener('click', () => {
             if (controller.currentSubject !== ''){
                 controller.removeSubject();
+                view.updateSubjectList();
+                view.renderQuestions();
             }
         });
 
@@ -141,19 +144,19 @@ let view = {
             view.renderQuestions();
         });
 
-
-
-
-
-
         this.subjectList.onchange = function(subjectList) {
             controller.chooseSubject(subjectList.target.value);
             view.renderQuestions();
         }
     },
 
-    updateSubjectList: function() {
+    updateSubjectList: function(defaultPosition = true) {
         this.subjectList.innerHTML = '';
+        let nullSubject = document.createElement('option');
+        nullSubject.value = '-';
+        nullSubject.textContent = '-';
+        this.subjectList.appendChild(nullSubject);
+
         for (let item of controller.getAllData()) {
             let subjectElement = document.createElement('option');
             subjectElement.value = item.theme;
@@ -161,7 +164,9 @@ let view = {
 
             this.subjectList.appendChild(subjectElement);
         }
-        this.subjectList.options.selectedIndex = this.subjectList.length - 1;
+
+        if (defaultPosition) this.subjectList.options.selectedIndex = 0;
+        else this.subjectList.options.selectedIndex = this.subjectList.length - 1;
     },
 
     renderQuestions: function() {
@@ -169,16 +174,17 @@ let view = {
 
         document.querySelector('#all-questions').innerHTML = '';
 
-        let questionContainer = document.createElement('ul');
-        let index = 0;
+        if (data) {
+            let questionContainer = document.createElement('ul');
+            let index = 0;
 
-        for (let questionAnswer of data) {
+            for (let questionAnswer of data) {
 
-            let item = document.createElement('li');
-            item.index = index;
+                let item = document.createElement('li');
+                item.index = index;
 
 
-            item.innerHTML = `<span class="info-box">
+                item.innerHTML = `<span class="info-box">
                 <h2 class="question-text">${questionAnswer[0]}</h2>
                 <h3 class="answer-text">${questionAnswer[1]}</h3>
                 </span>
@@ -187,13 +193,13 @@ let view = {
                 <button class="remove">Remove</button>
                 </span>`;
 
-            questionContainer.appendChild(item);
-            index++;
+                questionContainer.appendChild(item);
+                index++;
+            }
+            questionContainer.addEventListener('click', editBttn);
+            questionContainer.addEventListener('click', removeBttn);
+            document.querySelector('#all-questions').appendChild(questionContainer);
         }
-        questionContainer.addEventListener('click', editBttn);
-        questionContainer.addEventListener('click', removeBttn);
-        document.querySelector('#all-questions').appendChild(questionContainer);
-
     },
 };
 controller.init();
@@ -204,8 +210,6 @@ function editBttn(e) {
         let parent = e.srcElement.parentElement.parentElement;
         let questionText = parent.firstChild.childNodes[1].textContent;
         let answerText = parent.firstChild.childNodes[3].textContent;
-        console.log(questionText, answerText);
-        console.log(parent.index);
 
         let newQuestion, newAnswer;
         newQuestion = prompt('Edit question', questionText);
