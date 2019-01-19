@@ -2,23 +2,26 @@
  * */
 
 let model = {
-    data: [{
+   /* data: [{
         theme: 'Math',
         questionList: [['nameofquestion', 'answer of question']]
     },
         {
             theme: 'Physics',
             questionList: [['nameofquestion','answer of question2']]
-    }],
+    }],*/
 
-    /*init: function() {
-        if (!localStorage.data) {
-            localStorage.clear();
-            localStorage.data = JSON.stringify([]);
-        } else {
+    init: function() {
+        if (localStorage.data) {
             model.data = JSON.parse(localStorage.data);
+        } else {
+            model.data = [];
         }
-    },*/
+    },
+
+    saveToStorage: () => {
+        localStorage.data = JSON.stringify(model.data);
+    },
 
     addQuestion: function(question, answer, subject) {
         for (let item of this.data) {
@@ -26,6 +29,7 @@ let model = {
                 item.questionList.push([question, answer]);
             }
         }
+        this.saveToStorage();
     },
 
     removeQuestion: function(index, subject) {
@@ -34,6 +38,7 @@ let model = {
                 item.questionList.splice(index, 1);
             }
         }
+        this.saveToStorage();
     },
 
     editQuestion: function(index, question, answer, subject) {
@@ -44,6 +49,7 @@ let model = {
 
             }
         }
+        this.saveToStorage();
     }
 };
 
@@ -51,7 +57,7 @@ let controller = {
     currentSubject: '',
 
     init: function() {
-        /*model.init();*/
+        model.init();
         view.init();
     },
 
@@ -227,7 +233,6 @@ function removeBttn(e) {
     if (e.target.textContent === 'Remove'){
         e.stopPropagation();
         let parent = e.srcElement.parentElement.parentElement;
-        console.log(parent.index);
         controller.removeQuestion(parent.index);
     }
 }
