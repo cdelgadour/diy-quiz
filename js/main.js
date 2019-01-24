@@ -1,23 +1,23 @@
 /*
  * */
 
-let model = {
-   /* data: [{
+var model = {
+    data: [{
         theme: 'Math',
         questionList: [['nameofquestion', 'answer of question']]
     },
         {
             theme: 'Physics',
             questionList: [['nameofquestion','answer of question2']]
-    }],*/
+    }],
 
-    init: function() {
+    /*init: function() {
         if (localStorage.data) {
             model.data = JSON.parse(localStorage.data);
         } else {
             model.data = [];
         }
-    },
+    },*/
 
     saveToStorage: () => {
         localStorage.data = JSON.stringify(model.data);
@@ -57,7 +57,7 @@ let controller = {
     currentSubject: '',
 
     init: function() {
-        model.init();
+        /*model.init();*/
         view.init();
     },
 
@@ -153,7 +153,11 @@ let view = {
         this.subjectList.onchange = function(subjectList) {
             controller.chooseSubject(subjectList.target.value);
             view.renderQuestions();
-        }
+        },
+
+        document.getElementById('play-quiz').onclick = () => {
+            document.querySelector('.quiz-area').classList.add('active-quiz');
+        };
     },
 
     updateSubjectList: function(defaultPosition = true) {
@@ -236,6 +240,19 @@ function removeBttn(e) {
         controller.removeQuestion(parent.index);
     }
 }
+
+let quizView = {
+    init: function() {
+        this.data = controller.getDataBySubject();
+        console.log(controller.getDataBySubject());
+
+        this.questionView = document.getElementById('question-View');
+        this.answerView = document.getElementById('answer-view');
+
+        this.questionView.innerText = this.data[0][0];
+        this.answerView.innerText = this.data[0][1];
+    }
+};
 
 /*Cuando yo uso edit no se actualiza porque yo no tengo nada para actualizarlo. Lo que yo tengo para actualizar
 * el view, es el evento que yo puse cuando se cambiara el subjectList. El llama a la funcion render questions*/

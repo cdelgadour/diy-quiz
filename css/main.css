@@ -13,3 +13,11 @@ header {
 nav {
     background-color: lightgray;
     }
+
+.quiz-area {
+    display: none;
+}
+
+.active-quiz.quiz-area {
+    display: inline;
+}
