@@ -153,10 +153,11 @@ let view = {
         this.subjectList.onchange = function(subjectList) {
             controller.chooseSubject(subjectList.target.value);
             view.renderQuestions();
-        },
+        };
 
         document.getElementById('play-quiz').onclick = () => {
-            document.querySelector('.quiz-area').classList.add('active-quiz');
+            document.querySelector('.quiz-area').classList.toggle('active-quiz');
+            document.querySelector('.main').classList.toggle('inactive');
         };
     },
 
