@@ -4,11 +4,13 @@
 var model = {
     data: [{
         theme: 'Math',
-        questionList: [['nameofquestion', 'answer of question']]
+        questionList: [['What is pi?', '3.14'],['Square root of -1', 'i'],['2+2','4'],
+        ['x + 2 = 0 ; What is the value of x', '-2'],['(-2)^2 = ?', '4']]
     },
         {
             theme: 'Physics',
-            questionList: [['nameofquestion','answer of question2']]
+            questionList: [['Who discovered the 3 laws of classical mechanics','Isaac Newton'],
+                            ['What is the equation for Newton\'s 2nd Law','F = ma']]
     }],
 
     /*init: function() {
@@ -158,6 +160,7 @@ let view = {
         document.getElementById('play-quiz').onclick = () => {
             document.querySelector('.quiz-area').classList.toggle('active-quiz');
             document.querySelector('.main').classList.toggle('inactive');
+            quizView.init();
         };
     },
 
@@ -244,16 +247,38 @@ function removeBttn(e) {
 
 let quizView = {
     init: function() {
-        this.data = controller.getDataBySubject();
-        console.log(controller.getDataBySubject());
+        let quizViewData = controller.getDataBySubject().map(x => x);
 
-        this.questionView = document.getElementById('question-View');
-        this.answerView = document.getElementById('answer-view');
+        document.querySelector('#question-view').textContent = quizViewData[0][0];
+        document.querySelector('#answer-view').textContent = quizViewData[0][1];
+        quizViewData.splice(0, 1);
 
-        this.questionView.innerText = this.data[0][0];
-        this.answerView.innerText = this.data[0][1];
+        document.querySelector('#next').disabled = false;
+        document.querySelector('#answer-view').style.visibility = 'hidden';
+
+        //Button Events
+        document.querySelector('#flip').onclick = () => {
+            document.querySelector('#answer-view').style.visibility = 'visible';
+        };
+        document.querySelector('#next').onclick = () => {
+            let data = quizViewData[Math.floor(Math.random()*quizViewData.length)];
+            if (!data) {
+                document.querySelector('#next').disabled = true;
+            } else {
+                document.querySelector('#answer-view').style.visibility = 'hidden';
+                document.querySelector('#question-view').textContent = data[0];
+                document.querySelector('#answer-view').textContent = data[1];
+                quizViewData.splice(quizViewData.indexOf(data), 1);
+            }
+        };
+
+        document.querySelector('#quit').onclick = () => {
+            quizView.exitQuizView();
+        };
+
+    },
+    exitQuizView: function() {
+        document.querySelector('.quiz-area').classList.toggle('active-quiz');
+        document.querySelector('.main').classList.toggle('inactive');
     }
 };
-
-/*Cuando yo uso edit no se actualiza porque yo no tengo nada para actualizarlo. Lo que yo tengo para actualizar
-* el view, es el evento que yo puse cuando se cambiara el subjectList. El llama a la funcion render questions*/

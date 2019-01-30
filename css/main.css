@@ -1,5 +1,6 @@
 * {
     box-sizing: content-box;
+    font-family: "Helvetica", "Helvetica Neue", sans-serif;
 }
 
 body {
@@ -24,4 +25,8 @@ nav {
 
 .active-quiz.quiz-area {
     display: inline;
+}
+
+#answer-view {
+    visibility: hidden;
 }
