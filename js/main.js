@@ -89,7 +89,7 @@ let controller = {
         model.data.forEach((element, index) => {
             if (element.theme === this.currentSubject) {
                 model.data.splice(index, 1);
-                this.chooseSubject('');
+                this.chooseSubject('-');
             }
         });
     },
@@ -136,6 +136,7 @@ let view = {
         this.deleteSubject.addEventListener('click', () => {
             if (controller.currentSubject !== ''){
                 controller.removeSubject();
+                document.getElementById('play-quiz').disabled = true;
                 view.updateSubjectList();
                 view.renderQuestions();
             }
@@ -152,11 +153,17 @@ let view = {
             view.renderQuestions();
         });
 
-        this.subjectList.onchange = function(subjectList) {
-            controller.chooseSubject(subjectList.target.value);
+        this.subjectList.onchange = function(e) {
+            controller.chooseSubject(e.target.value);
+            if (e.target.value !== '-') {
+                document.getElementById('play-quiz').disabled = false;
+            } else {
+                document.getElementById('play-quiz').disabled = true;
+            }
             view.renderQuestions();
         };
 
+        document.getElementById('play-quiz').disabled = true;
         document.getElementById('play-quiz').onclick = () => {
             document.querySelector('.quiz-area').classList.toggle('active-quiz');
             document.querySelector('.main').classList.toggle('inactive');
