@@ -2,24 +2,13 @@
  * */
 
 var model = {
-    data: [{
-        theme: 'Math',
-        questionList: [['What is pi?', '3.14'],['Square root of -1', 'i'],['2+2','4'],
-        ['x + 2 = 0 ; What is the value of x', '-2'],['(-2)^2 = ?', '4']]
-    },
-        {
-            theme: 'Physics',
-            questionList: [['Who discovered the 3 laws of classical mechanics','Isaac Newton'],
-                            ['What is the equation for Newton\'s 2nd Law','F = ma']]
-    }],
-
-    /*init: function() {
+    init: function() {
         if (localStorage.data) {
             model.data = JSON.parse(localStorage.data);
         } else {
             model.data = [];
         }
-    },*/
+    },
 
     saveToStorage: () => {
         localStorage.data = JSON.stringify(model.data);
@@ -59,7 +48,7 @@ let controller = {
     currentSubject: '',
 
     init: function() {
-        /*model.init();*/
+        model.init();
         view.init();
     },
 
