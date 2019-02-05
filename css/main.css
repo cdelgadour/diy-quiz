@@ -79,3 +79,34 @@ textarea {
 #answer-view {
     visibility: hidden;
 }
+
+/*Question list*/
+
+ul > li {
+    margin-bottom: 1em;
+}
+
+#all-questions {
+    margin-top: 1em;
+}
+
+.answer-text {
+    color: #148bc194;
+}
+
+/*Quiz area*/
+
+.question-box {
+    padding: 1em;
+}
+
+.question-box * {
+    margin-bottom: .4em;
+}
+
+#button-box * {
+    padding: 1em 2em 1em 2em;
+    font-size: .8em;
+}
+
+
