@@ -1,19 +1,68 @@
 * {
     box-sizing: content-box;
     font-family: "Helvetica", "Helvetica Neue", sans-serif;
+    margin: 0;
 }
 
 body {
-    width: 100%;
+    width: 96%;
+    margin: 2%;
+}
+
+body, header, section, nav {
+    border-radius: 5px;
 }
 
 header {
-    background-color: springgreen;
+    background-color: white;
 }
 
 nav {
-    background-color: lightgray;
-    }
+    background-color: #b1afaf6b;
+}
+
+button {
+    border: 2px solid #d8d8d8;
+    background: white;
+    border-radius: 5px;
+    padding: 0.6em;
+    margin: 0.3em;
+}
+
+button:hover {
+    background-color: aquamarine;
+    font-weight: bolder;
+}
+
+.main {
+
+}
+
+#question-form {
+    text-align: center;
+    box-shadow: 0 1px 10px #c7bdc7;
+    padding: 0.4em;
+}
+
+textarea {
+    border: 0px;
+    border-radius: 2px;
+    background: #6e6ea212;
+    width: 96%;
+    font-size: 1em;
+}
+
+#app-name {
+    font-weight: lighter;
+}
+
+#exam-themes {
+    background: white;
+    border-style: solid;
+    padding: 0.5em;
+    margin: 0.3em;
+    width: 35%;
+}
 
 .main.inactive {
     display: none;
