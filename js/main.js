@@ -1,7 +1,4 @@
-/*
- * */
-
-var model = {
+let model = {
     init: function() {
         if (localStorage.data) {
             model.data = JSON.parse(localStorage.data);
@@ -70,10 +67,6 @@ let controller = {
         view.renderQuestions();
     },
 
-    /*
-    * TODO: Elemino el elemento
-    * TODO: Tengo que seleccionar otro como */
-
     removeSubject: function(){
         model.data.forEach((element, index) => {
             if (element.theme === this.currentSubject) {
@@ -85,7 +78,6 @@ let controller = {
 
     edit: function(index, newQuestion, newAnswer) {
         model.editQuestion(index, newQuestion, newAnswer, this.currentSubject);
-        /*view.updateSubjectList();*/
     },
 
     getAllData: function() {
@@ -144,11 +136,7 @@ let view = {
 
         this.subjectList.onchange = function(e) {
             controller.chooseSubject(e.target.value);
-            if (e.target.value !== '-') {
-                document.getElementById('play-quiz').disabled = false;
-            } else {
-                document.getElementById('play-quiz').disabled = true;
-            }
+            document.getElementById('play-quiz').disabled = e.target.value === '-';
             view.renderQuestions();
         };
 
@@ -181,6 +169,8 @@ let view = {
 
     renderQuestions: function() {
         let data = controller.getDataBySubject();
+        if (data) this.enablePlayButton(data.length < 1);
+
 
         document.querySelector('#all-questions').innerHTML = '';
 
@@ -211,6 +201,10 @@ let view = {
             document.querySelector('#all-questions').appendChild(questionContainer);
         }
     },
+
+    enablePlayButton: function(enable) {
+        document.getElementById('play-quiz').disabled = enable;
+    }
 };
 controller.init();
 

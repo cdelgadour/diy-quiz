@@ -1,3 +1,4 @@
+
 * {
     box-sizing: content-box;
     font-family: "Helvetica", "Helvetica Neue", sans-serif;
@@ -34,16 +35,6 @@ button:hover {
     font-weight: bolder;
 }
 
-.main {
-
-}
-
-#question-form {
-    text-align: center;
-    box-shadow: 0 1px 10px #c7bdc7;
-    padding: 0.4em;
-}
-
 textarea {
     border: 0px;
     border-radius: 2px;
@@ -52,10 +43,14 @@ textarea {
     font-size: 1em;
 }
 
+
+/*Header*/
+
 #app-name {
     font-weight: lighter;
 }
 
+/*Nav bar*/
 #exam-themes {
     background: white;
     border-style: solid;
@@ -64,20 +59,16 @@ textarea {
     width: 35%;
 }
 
+
+/*Main area*/
+#question-form {
+    text-align: center;
+    box-shadow: 0 1px 10px #c7bdc7;
+    padding: 0.4em;
+}
+
 .main.inactive {
     display: none;
-}
-
-.quiz-area {
-    display: none;
-}
-
-.active-quiz.quiz-area {
-    display: inline;
-}
-
-#answer-view {
-    visibility: hidden;
 }
 
 /*Question list*/
@@ -109,4 +100,48 @@ ul > li {
     font-size: .8em;
 }
 
+.quiz-area {
+    display: none;
+}
 
+.active-quiz.quiz-area {
+    display: inline;
+}
+
+#answer-view {
+    visibility: hidden;
+}
+
+@media only screen and (min-width: 800px) {
+    body {
+        width: 800px;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 3em;
+    }
+
+    button {
+        font-size: .8em;
+    }
+
+    #exam-themes {
+        width: 11%;
+        height: 2em;
+    }
+
+    .main {
+        display: flex;
+    }
+
+    #question-form {
+        width: 50%;
+    }
+
+    #all-questions {
+        width: 50%;
+        height: 270px;
+        overflow-y: scroll;
+    }
+}
